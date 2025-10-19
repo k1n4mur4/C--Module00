@@ -9,54 +9,6 @@ int Account::_totalAmount = 0;
 int Account::_totalNbDeposits = 0;
 int Account::_totalNbWithdrawals = 0;
 
-// タイムスタンプ表示 [YYYYMMDD_HHMMSS]
-void	Account::_displayTimestamp(void)
-{
-	std::time_t	t = std::time(NULL);
-	std::tm		*lt = std::localtime(&t);
-
-	std::cout << '['
-	          << std::setw(4) << std::setfill('0') << (lt->tm_year + 1900)
-	          << std::setw(2) << std::setfill('0') << (lt->tm_mon + 1)
-	          << std::setw(2) << std::setfill('0') << lt->tm_mday
-	          << '_'
-	          << std::setw(2) << std::setfill('0') << lt->tm_hour
-	          << std::setw(2) << std::setfill('0') << lt->tm_min
-	          << std::setw(2) << std::setfill('0') << lt->tm_sec
-	          << "] ";
-}
-
-// --- static アクセサ ---
-int		Account::getNbAccounts(void)
-{
-	return _nbAccounts;
-}
-
-int		Account::getTotalAmount(void)
-{
-	return _totalAmount;
-}
-
-int		Account::getNbDeposits(void)
-{
-	return _totalNbDeposits;
-}
-
-int		Account::getNbWithdrawals(void)
-{
-	return _totalNbWithdrawals;
-}
-
-void	Account::displayAccountsInfos(void)
-{
-	_displayTimestamp();
-	std::cout << "accounts:" << getNbAccounts()
-	          << ";total:" << getTotalAmount()
-	          << ";deposits:" << getNbDeposits()
-	          << ";withdrawals:" << getNbWithdrawals()
-	          << std::endl;
-}
-
 // --- コンストラクタ / デストラクタ ---
 Account::Account(int initial_deposit)
 : _accountIndex(_nbAccounts),
@@ -79,8 +31,37 @@ Account::~Account(void)
 	std::cout << "index:" << _accountIndex
 	          << ";amount:" << _amount
 	          << ";closed" << std::endl;
+}
 
-	// 破棄時に集計を減算しない（42の課題仕様：累積はそのまま）
+// --- static アクセサ ---
+int		Account::getNbAccounts(void)
+{
+	return (Account::_nbAccounts);
+}
+
+int		Account::getTotalAmount(void)
+{
+	return (Account::_totalAmount);
+}
+
+int		Account::getNbDeposits(void)
+{
+	return (Account::_totalNbDeposits);
+}
+
+int		Account::getNbWithdrawals(void)
+{
+	return (Account::_totalNbWithdrawals);
+}
+
+void	Account::displayAccountsInfos(void)
+{
+	_displayTimestamp();
+	std::cout << "accounts:" << getNbAccounts()
+	          << ";total:" << getTotalAmount()
+	          << ";deposits:" << getNbDeposits()
+	          << ";withdrawals:" << getNbWithdrawals()
+	          << std::endl;
 }
 
 // --- インスタンスメソッド ---
@@ -134,7 +115,7 @@ bool	Account::makeWithdrawal(int withdrawal)
 
 int		Account::checkAmount(void) const
 {
-	return _amount;
+	return (Account::_amount);
 }
 
 void	Account::displayStatus(void) const
@@ -145,4 +126,21 @@ void	Account::displayStatus(void) const
 	          << ";deposits:" << _nbDeposits
 	          << ";withdrawals:" << _nbWithdrawals
 	          << std::endl;
+}
+
+// タイムスタンプ表示 [YYYYMMDD_HHMMSS]
+void	Account::_displayTimestamp(void)
+{
+	std::time_t	t = std::time(NULL);
+	std::tm		*lt = std::localtime(&t);
+
+	std::cout << '['
+	          << std::setw(4) << std::setfill('0') << (lt->tm_year + 1900)
+	          << std::setw(2) << std::setfill('0') << (lt->tm_mon + 1)
+	          << std::setw(2) << std::setfill('0') << lt->tm_mday
+	          << '_'
+	          << std::setw(2) << std::setfill('0') << lt->tm_hour
+	          << std::setw(2) << std::setfill('0') << lt->tm_min
+	          << std::setw(2) << std::setfill('0') << lt->tm_sec
+	          << "] ";
 }
