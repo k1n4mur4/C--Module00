@@ -8,8 +8,11 @@ RM			=	rm -rf
 MAKEFLAGS	+=	--no-print-directory
 
 # Files
-SRCS		=	megaphone.cpp
+SRCS		=	main.cpp PhoneBook.cpp Contact.cpp
 OBJS		=	${SRCS:.cpp=.o}
+
+# Includes
+INCLUDES	=	PhoneBook.hpp Contact.hpp
 
 # Colors
 RESET		=	\033[0m
