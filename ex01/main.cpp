@@ -1,6 +1,7 @@
 #include "PhoneBook.hpp"
 #include <string>
 #include <cctype>
+#include <cstdlib>
 
 static bool	is_valid_number(const std::string& number) {
 	std::string::size_type	len;
@@ -16,25 +17,35 @@ static bool	is_valid_number(const std::string& number) {
 	return (true);
 }
 
+static bool	get_nonempty_input(const std::string& prompt, std::string& value) {
+	while (true) {
+		std::cout << prompt;
+		if (!std::getline(std::cin, value))
+			return (false);
+		if (!value.empty())
+			return (true);
+		std::cout << "Input cannot be empty" << std::endl;
+	}
+}
+
 void	command_add(PhoneBook& phonebook) {
 	std::string	data[5];
 
-	std::cout << "First Name: ";
-	std::getline(std::cin, data[0]);
-	std::cout << "Last Name: ";
-	std::getline(std::cin, data[1]);
-	std::cout << "Nickname: ";
-	std::getline(std::cin, data[2]);
+	if (!get_nonempty_input("First Name: ", data[0]))
+		return ;
+	if (!get_nonempty_input("Last Name: ", data[1]))
+		return ;
+	if (!get_nonempty_input("Nickname: ", data[2]))
+		return ;
 	while (true) {
-		std::cout << "Phone Number: ";
-		if (!std::getline(std::cin, data[3]))
+		if (!get_nonempty_input("Phone Number: ", data[3]))
 			return ;
 		if (is_valid_number(data[3]))
 			break ;
 		std::cout << data[3] << " is not a valid phone number" << std::endl;
 	}
-	std::cout << "Darkest Secret: ";
-	std::getline(std::cin, data[4]);
+	if (!get_nonempty_input("Darkest Secret: ", data[4]))
+		return ;
 	phonebook.add_contact(data);
 	std::cout << "Contact added successfully" << std::endl;
 }
