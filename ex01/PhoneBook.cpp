@@ -1,4 +1,13 @@
 #include "PhoneBook.hpp"
+#include <string>
+
+static std::string	format_field(const std::string& field) {
+	if (field.length() > 10)
+		return (field.substr(0, 9) + ".");
+	if (field.length() == 10)
+		return (field);
+	return (std::string(10 - field.length(), ' ') + field);
+}
 
 int	PhoneBook::get_size(void) const {
 	return (this->size);
@@ -28,10 +37,15 @@ void	PhoneBook::display_contact(int index) const {
 }
 
 void	PhoneBook::display_phonebook(void) const {
+	std::cout << "|" << format_field("index");
+	std::cout << "|" << format_field("first name");
+	std::cout << "|" << format_field("last name");
+	std::cout << "|" << format_field("nickname") << "|" << std::endl;
 	for (int i = 0; i < this->size; i++) {
-		std::cout << "|" << i << "\t|";
-		std::cout << "\t" << this->contacts[i].get_firstname() << "|";
-		std::cout << "\t" << this->contacts[i].get_lastname() << "|";
-		std::cout << "\t" << this->contacts[i].get_nickname() << "|" << std::endl;
+		std::cout << "|" << format_field(std::to_string(i));
+		std::cout << "|" << format_field(this->contacts[i].get_firstname());
+		std::cout << "|" << format_field(this->contacts[i].get_lastname());
+		std::cout << "|" << format_field(this->contacts[i].get_nickname());
+		std::cout << "|" << std::endl;
 	}
 }

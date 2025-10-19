@@ -2,19 +2,14 @@
 #include <string>
 #include <cctype>
 
-static bool	is_valid_number(std::string& number) {
-	int	len;
+static bool	is_valid_number(const std::string& number) {
+	std::string::size_type	len;
 
 	len = number.length();
 	if (len != 10)
 		return (false);
-	for (int i = 0; i < len; i++)
-	{
-		if (number[i] == ' ')
-		{
-			continue;
-		}
-		if (!std::isdigit(number[i])) {
+	for (std::string::size_type i = 0; i < len; ++i) {
+		if (!std::isdigit(static_cast<unsigned char>(number[i]))) {
 			return (false);
 		}
 	}
@@ -30,15 +25,14 @@ void	command_add(PhoneBook& phonebook) {
 	std::getline(std::cin, data[1]);
 	std::cout << "Nickname: ";
 	std::getline(std::cin, data[2]);
-	std::cout << "Phone Number: ";
-	std::getline(std::cin, data[3]);
-	do {
+	while (true) {
 		std::cout << "Phone Number: ";
-		std::getline(std::cin, data[3]);
-		if (!is_valid_number(data[3]))
+		if (!std::getline(std::cin, data[3]))
+			return ;
+		if (is_valid_number(data[3]))
 			break ;
 		std::cout << data[3] << " is not a valid phone number" << std::endl;
-	} while (!is_valid_number(data[3]));
+	}
 	std::cout << "Darkest Secret: ";
 	std::getline(std::cin, data[4]);
 	phonebook.add_contact(data);
@@ -63,7 +57,6 @@ void	command_search(PhoneBook &phonebook) {
 int	main(void) {
 	PhoneBook	phonebook;
 	std::string	input;
-	int			index;
 
 	while (true) {
 		std::cout << "Phonebook ";
@@ -73,8 +66,6 @@ int	main(void) {
 		}
 		else if (input == "SEARCH") {
 			command_search(phonebook);
-			std::cin.clear();
-			std::getline(std::cin, input);
 		}
 		else if (input == "EXIT") {
 			std::cout << "Exiting Phonebook" << std::endl;
